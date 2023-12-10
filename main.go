@@ -82,3 +82,17 @@ func getUser(db *sql.DB) http.HandlerFunc {
 		json.NewEncoder(w).Encode(u)
 	}
 }
+
+// create user
+func createUser(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r* http.Request) {
+		var u User
+		json.NewDecoder(r.Body).Decode(&u)
+		_, err := db.Exec("INSERT INTO users (name, email) VALUES ($1, $2)", u.Name, u.Email)
+		if err != nil {
+			log.Fatal(err)
+		}
+		json.NewEncoder(w).Encode(u)
+	}
+}
+
