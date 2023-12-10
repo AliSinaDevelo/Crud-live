@@ -9,3 +9,6 @@ RUN go get -d -v ./...
 # build the binary
 RUN go build -o api .
 # expose port 8080
+EXPOSE 8080
+# run the binary
+CMD ["./api"]
