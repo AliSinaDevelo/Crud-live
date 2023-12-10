@@ -99,7 +99,7 @@ func createUser(db *sql.DB) http.HandlerFunc {
 func updateUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r* http.Request) {
 		params := mux.Vars(r)
-		
+
 		var u User
 		json.NewDecoder(r.Body).Decode(&u)
 		_, err := db.Exec("UPDATE users SET name=$1, email=$2 WHERE id=$3", u.Name, u.Email, params["id"])
@@ -107,5 +107,18 @@ func updateUser(db *sql.DB) http.HandlerFunc {
 			log.Fatal(err)
 		}
 		json.NewEncoder(w).Encode(u)
+	}
+}
+
+// delete user
+func deleteUser(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r* http.Request) {
+		params := mux.Vars(r)
+		_, err := db.Exec("DELETE FROM users WHERE id=$1", params["id"])
+		if err != nil {
+			// todo fix err handle
+			log.Fatal(err)
+		}
+		json.NewEncoder(w).Encode(params["id"])
 	}
 }
