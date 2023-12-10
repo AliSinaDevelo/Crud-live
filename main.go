@@ -26,5 +26,11 @@ func main() {
 	}
 	defer db.Close()
 
-	
+	// create router
+	router := mux.NewRouter()
+	router.HandleFunc("/users", getUsers(db)).Methods("GET")
+	router.HandleFunc("/users/{id}", getUsers(db)).Methods("GET")
+	router.HandleFunc("/users", createUser(db)).Methods("POST")
+	router.HandleFunc("/users/{id}", updateUser(db)).Methods("PUT")
+	router.HandleFunc("/users/{id}", deleteUser(db)).Methods("DELETE")
 }
