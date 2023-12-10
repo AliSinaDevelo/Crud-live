@@ -1,5 +1,5 @@
 # official golang image
-FROM golang:1.16.3-alpine3.13
+FROM golang:1.18.0-alpine3.14
 # set working directory
 WORKDIR /app
 # copy the src code
