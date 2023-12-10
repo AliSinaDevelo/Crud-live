@@ -45,6 +45,7 @@ func jsonContTMiddleWare (next http.Handler) http.Handler {
 	})
 }
 
+// get all the users
 func getUsers(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r* http.Request) {
 		rows, err := db.Query("SELECT * FROM users")
@@ -66,5 +67,18 @@ func getUsers(db *sql.DB) http.HandlerFunc {
 		}
 
 		json.NewEncoder(w).Encode(user)
+	}
+}
+
+// get user by ID
+func getUser(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r* http.Request) {
+		params := mux.Vars(r)
+		row := db.QueryRow("SELECT * FROM users WHERE id=$1", params["id"])
+		var u User
+		if err := row.Scan(&u.ID, &u.Name, &u.Email); err != nil {
+			log.Fatal(err)
+		}
+		json.NewEncoder(w).Encode(u)
 	}
 }
