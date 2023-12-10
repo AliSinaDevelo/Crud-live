@@ -35,5 +35,12 @@ func main() {
 	router.HandleFunc("/users/{id}", deleteUser(db)).Methods("DELETE")
 
 	// start server
-	log.Fatal(http.ListenAndServe(":8000", jsonContentTypeMiddleWare(router)))
+	log.Fatal(http.ListenAndServe(":8000", jsonContTMiddleWare(router)))
+}
+
+func jsonContTMiddleWare (next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "applications/json")
+		next.ServeHTTP(w, r)
+	})
 }
