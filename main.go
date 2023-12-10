@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 	"github.com/gorilla/mux"
-	"github.com/lib/pq"
+	_ "github.com/lib/pq"
 
 )
 
@@ -26,6 +26,7 @@ func main() {
 	}
 	defer db.Close()
 
+	
 	// create router
 	router := mux.NewRouter()
 	router.HandleFunc("/users", getUsers(db)).Methods("GET")
