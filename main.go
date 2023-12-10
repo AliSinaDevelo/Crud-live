@@ -33,4 +33,7 @@ func main() {
 	router.HandleFunc("/users", createUser(db)).Methods("POST")
 	router.HandleFunc("/users/{id}", updateUser(db)).Methods("PUT")
 	router.HandleFunc("/users/{id}", deleteUser(db)).Methods("DELETE")
+
+	// start server
+	log.Fatal(http.ListenAndServe(":8000", jsonContentTypeMiddleWare(router)))
 }
